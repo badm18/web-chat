@@ -1,0 +1,50 @@
+
+
+.main-container {
+    max-width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    background:#F6F8FA;
+}
+.left-side{
+    width: 20%;
+}
+.center{
+    width: 60%;
+    align-items: center;
+    background: red;
+}
+.right-side{
+    width: 20%;
+    display:flex;
+    justify-content: space-around;
+}
+.search-string{
+    justify-content: center;
+    display: flex;
+}
+#search{
+    width: 300px;
+    height: 25px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border:1px solid;
+}
+.icons-nav{
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 5px 5px 5px;
+}
+#calendar-ref{
+    margin-right:10px;
+}
+#calendar-icon:hover,#plus-icon:hover{
+    fill:gray;
+}
+.task{
+    width: 40px;
+    height: 40px;
+    background: purple;
+}

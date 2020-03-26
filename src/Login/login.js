@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './login.css';
+import { BrowserRouter as  Link } from "react-router-dom";
 
 
-class Login extends Component{
-
-render(){
-    return(
+class Login extends Component {
 
 
-        <div className="container">
+
+  render() {
+    return (
+
+
+      <div className="container">
         <h2>Вход</h2>
         <form>
           <div className="form-group">
@@ -24,17 +27,19 @@ render(){
             <label className="form-check-label">
               <input className="form-check-input" type="checkbox" name="remember" /> Запомнить меня
             </label>
-              <a  id="registr">Регистрация</a>
+
+            <Link to="/registration" id="registr">Регистрация</Link>
+
           </div>
           <button type="submit" className="btn btn-primary" >Продолжить</button>
         </form>
-       </div>
+      </div>
 
 
 
 
     );
-}
+  }
 
 
 
