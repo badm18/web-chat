@@ -1,4 +1,6 @@
-
+a{
+    cursor: pointer;
+}
 
 .main-container {
     max-width: 100%;
@@ -23,6 +25,8 @@
 .search-string{
     justify-content: center;
     display: flex;
+    background:#F6F8FA;
+    border:1px solid black;
 }
 #search{
     width: 300px;
@@ -40,11 +44,29 @@
 #calendar-ref{
     margin-right:10px;
 }
-#calendar-icon:hover,#plus-icon:hover{
+#calendar-icon:hover,#plus-icon:hover,#checkMark:hover,#edit:hover{
     fill:gray;
 }
 .task{
-    width: 40px;
-    height: 40px;
-    background: purple;
+    margin: 10px;
+    background: #FEF8F8;
+    border-radius: 42px;
+    padding: 15px;
+    
+}
+#taskText{
+    text-align: center;
+}
+#taskFooter{
+    display: flex;
+    justify-content: space-between;
+}
+#checkMark{
+    width: 25px;
+    padding-bottom: 20px;
+}
+#edit{
+    width: 25px;
+    padding-bottom: 20px;
+    margin-right: 5px;
 }
