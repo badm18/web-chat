@@ -42,7 +42,7 @@ class ModalPlus extends Component {
       show: false,
       id: this.state.id+1,
      });
-    if (this.state.text != '') {
+    if (this.state.text !== '') {
       this.props.updateData(
         {
           label: this.state.label,
