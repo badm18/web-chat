@@ -29,7 +29,7 @@ class RegisterForm extends Component {
 
     handleSubmit=(e)=>{
         e.preventDefault();
-        console.log(this.state)
+        firebase.register();
     }
    
 
@@ -53,7 +53,7 @@ class RegisterForm extends Component {
 
             <div class="container">
                 <div class="row main-form">
-                    <form class="" action="#" onSubmit={this.handleSubmit}>
+                    <form  onSubmit={this.onRegister}>
 
                         <div class="form-group">
                             <label for="name" classNameName="cols-sm-2 control-label">Имя</label>

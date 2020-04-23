@@ -18,25 +18,30 @@ class Login extends Component {
   }
 
 
-  login() {
-    
-    
-    firebase.login(this.state.email, this.state.password);
+  async login() {
 
-        if (!firebase.isUserSignedIn()) {
-          return alert('Not authorized');
-        }
 
-         return  this.props.history.push('/id');
+  await firebase.login(this.state.email, this.state.password);
+
+    if (!firebase.isUserSignedIn()) {
+      return alert('Not authorized');
+    }else{
+       return this.props.history.push('/id');
     }
+
   
 
-    
-     
-  
-    
-  
-  
+
+
+  }
+
+
+
+
+
+
+
+
 
 
 
