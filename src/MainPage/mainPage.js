@@ -25,7 +25,7 @@ class MainPage extends Component {
         this.time = this.time.bind(this);
         this.addZero = this.addZero.bind(this);
         this.logout= this.logout.bind(this);
-        // this.addTask=this.addTask.bind(this);
+        
     }
 
 
@@ -61,13 +61,6 @@ class MainPage extends Component {
     }
 
 
-    // addTask(){
-    //     const items= this.state.task.map(i=><div className="task">{i}</div>);
-    //     this.setState({
-    //         task:items
-    //     })
-
-    // }
 
     updateData = (value) => {
         this.state.task.push(value);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './registerForm.css';
-import firebase from '../firebase'
+import firebase from '../firebase';
 
 
 class RegisterForm extends Component {
@@ -56,68 +56,68 @@ class RegisterForm extends Component {
                     <form class="" action="#" onSubmit={this.handleSubmit}>
 
                         <div class="form-group">
-                            <label for="name" class="cols-sm-2 control-label">Имя</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" name="name" id="name" placeholder="Введите ваше Имя" required pattern="[A-Za-zА-Яа-я]+" onChange={this.handleChange} />
+                            <label for="name" classNameName="cols-sm-2 control-label">Имя</label>
+                            <div className="cols-sm-10">
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input type="text" className="form-control" name="name" id="name" placeholder="Введите ваше Имя" required pattern="[A-Za-zА-Яа-я]+" onChange={this.handleChange} />
                                 </div>
                             </div>
                         </div>
 
 
-                        <div class="form-group">
-                            <label for="username" class="cols-sm-2 control-label">Фамилия</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" name="username" id="surname" placeholder="Введите вашу фамилию" required pattern="[A-Za-zА-Яа-я]+"  onChange={this.handleChange} />
+                        <div className="form-group">
+                            <label for="username" className="cols-sm-2 control-label">Фамилия</label>
+                            <div className="cols-sm-10">
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-users fa" aria-hidden="true"></i></span>
+                                    <input type="text" className="form-control" name="username" id="surname" placeholder="Введите вашу фамилию" required pattern="[A-Za-zА-Яа-я]+"  onChange={this.handleChange} />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="email" class="cols-sm-2 control-label">Email</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                                    <input type="email" class="form-control" name="email" id="email" placeholder="Введите ваш Email" required  onChange={this.handleChange} />
+                        <div className="form-group">
+                            <label for="email" className="cols-sm-2 control-label">Email</label>
+                            <div className="cols-sm-10">
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-envelope fa" aria-hidden="true"></i></span>
+                                    <input type="email" className="form-control" name="email" id="email" placeholder="Введите ваш Email" required  onChange={this.handleChange} />
                                 </div>
                             </div>
                         </div>
 
 
-                        <div class="form-group">
-                            <label for="password" class="cols-sm-2 control-label">Пароль</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                    <input type="password" class="form-control" name="password" id="password" placeholder="Введите ваш пароль" required  onChange={this.handleChange} />
+                        <div className="form-group">
+                            <label for="password" className="cols-sm-2 control-label">Пароль</label>
+                            <div className="cols-sm-10">
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                    <input type="password" className="form-control" name="password" id="password" placeholder="Введите ваш пароль" required  onChange={this.handleChange} />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="confirm" class="cols-sm-2 control-label">Подтверждение пароля</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                    <input type="password" class="form-control" name="confirm" id="passwordConfirm" placeholder="Введите ваш пароль" required  onChange={this.handleChange} />
+                        <div className="form-group">
+                            <label for="confirm" className="cols-sm-2 control-label">Подтверждение пароля</label>
+                            <div className="cols-sm-10">
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                    <input type="password" className="form-control" name="confirm" id="passwordConfirm" placeholder="Введите ваш пароль" required  onChange={this.handleChange} />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="confirm" class="cols-sm-2 control-label">Ключ (необязательно)</label>
-                            <div class="cols-sm-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                    <input type="password" class="form-control" name="confirm" id="confirm" placeholder="Введите ключ директора компании" />
+                        <div className="form-group">
+                            <label for="confirm" className="cols-sm-2 control-label">Ключ (необязательно)</label>
+                            <div className="cols-sm-10">
+                                <div className="input-group">
+                                    <span className="input-group-addon"><i className="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                    <input type="password" className="form-control" name="confirm" id="confirm" placeholder="Введите ключ директора компании" />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group ">
+                        <div className="form-group ">
                             <button type="submit" id="button" >Зарегестрироваться</button>
                             {/* onClick={this.onRegister} */}
                         </div>

@@ -22,19 +22,21 @@ class Login extends Component {
     
     
     firebase.login(this.state.email, this.state.password);
-        this.props.history.push('/id');
+
+        if (!firebase.isUserSignedIn()) {
+          return alert('Not authorized');
+        }
+
+         return  this.props.history.push('/id');
+    }
+  
+
+    
      
-    
-    
-    
-
-
-
-//     if(firebase.isUserSignedIn){
-//  }
+  
     
   
-  }
+  
 
 
 
@@ -47,7 +49,7 @@ class Login extends Component {
 
       <div className="container">
         <h2>Вход</h2>
-        <form>
+        <form onSubmit={this.login}>
           <div className="form-group">
             <label htmlFor="email">Логин:</label>
             <input type="email" className="form-control" id="email" placeholder="Введите ваш email" name="email" required onChange={(event) => this.setState({ email: event.target.value })} />
@@ -64,7 +66,7 @@ class Login extends Component {
             <NavLink to={'/registration'} id='registr'>Регистрация</NavLink>
 
           </div>
-          <button type="submit" className="btn btn-primary" onClick={this.login}>Продолжить</button>
+          <button type="submit" className="btn btn-primary" >Продолжить</button>
         </form>
 
       </div>

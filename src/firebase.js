@@ -25,11 +25,8 @@ class Firebase {
 		this.db = app.firestore()
 	}
 
-	login(email, password) {
-		this.auth.signInWithEmailAndPassword(email, password).then(function (result) {
-		 console.log(result);
-
-		});
+	 login(email, password) {
+		 this.auth.signInWithEmailAndPassword(email, password);
 	}
 
 	logout() {
@@ -64,7 +61,7 @@ class Firebase {
 
 
 	isUserSignedIn() {
-		return !!app.auth().currentUser;
+		return app.auth().currentUser;
 	}
 
 
