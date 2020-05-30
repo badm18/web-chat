@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, InputGroup, FormControl } from 'react-bootstrap';
 import './modalPlus.css';
-
+import * as app from "firebase/app";
 
 
 
@@ -42,13 +42,15 @@ class ModalPlus extends Component {
       show: false,
       id: this.state.id+1,
      });
+
+
     if (this.state.text !== '') {
       this.props.updateData(
         {
           label: this.state.label,
           text: this.state.text,
-          dateOfCreation: new Date(),
-          id:this.state.id,
+          dateOfCreation: String(this.state.date.toLocaleDateString()),
+          id:app.database().ref().child('posts').push().key,
         }
       )
     }

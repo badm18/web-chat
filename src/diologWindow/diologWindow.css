@@ -1,0 +1,60 @@
+
+
+
+.diologheader{
+    background:burlywood;
+    border: 2px solid black;
+    display: flex;
+    margin: 0px 10px 10px 10px;
+    justify-content: space-between;
+}
+.headerLeft{
+    display:flex;
+}
+
+.diologFooter{
+    background: cornflowerblue;
+    height: 70px;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 10px;
+}
+
+.diologField{
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+ 
+}
+.messageField{
+    flex-grow: 1;
+    overflow: auto;
+    max-height: 600px;
+}
+.messageBox{
+    padding: 10px;
+    margin: 0px 60px 10px 5px;
+    background-color: white;
+    width: 100%;
+}
+.messageBox--Sender{
+    width: 100%;
+    padding: 10px;
+    margin: 0px 60px 10px 5px;
+    background:#c1c1c1;
+}
+.message{
+    display: flex;
+}
+
+
+#messageInput{
+    height: 50px;
+    width: 500px;
+    border-radius: 4px;
+    margin-top:10px;
+}
+#crossMark:hover,#clip:hover{
+    fill:gray;
+    cursor: pointer;
+}

@@ -1,32 +1,37 @@
 import React, { Component } from 'react';
-import * as firebase from 'firebase';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './Login/login';
 import RegistrForm from './RegisterForm/registerForm';
 import MainPage from './MainPage/mainPage'
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { createBrowserHistory } from "history";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import * as app from "firebase/app";
 
 
-const customHistory = createBrowserHistory();
+
 
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      speed: 10,
+      user: null,
     }
   }
 
-  // componentDidMount() {
-  //   const rootRef = firebase.database().ref().child('speed');
-  //   rootRef.on('value', snap => {
-  //     this.setState({
-  //       speed: snap.val()
-  //     });
-  //   });
-  // }
+  componentDidMount() {
+    this.authListener();
+  }
+
+  authListener() {
+    app.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user });
+      } else {
+        this.setState({ user: null });
+      }
+    });
+  }
+
 
 
 
@@ -36,21 +41,13 @@ class App extends Component {
 
   render() {
     return (
-
-
-      <Router >
+        <Router>
         <Route exact path="/" component={Login} />
         <Route path="/registration" component={RegistrForm} />
-        <Route path="/id" component={MainPage} />
-      </Router>
-
-
-
-
-
-
-
-
+        <Route path="/id"> 
+        {this.state.user ? <MainPage />: <Redirect push to={'/'} />}
+        </Route>
+        </Router>
     );
   }
 }

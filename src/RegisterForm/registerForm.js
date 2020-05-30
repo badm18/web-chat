@@ -33,7 +33,13 @@ class RegisterForm extends Component {
     }
    
 
-    onRegister() {
+    onRegister(e) {
+        e.preventDefault();
+        
+       if(this.state.password!=this.state.passwordConfirm){
+           return alert('Пароль не совпадает')
+       }
+       
         firebase.register(this.state.name, this.state.surname, this.state.email, this.state.password);
         this.setState({
             email: '',
@@ -43,7 +49,7 @@ class RegisterForm extends Component {
             surname: '',
         });
 
-
+    
     }
 
 
@@ -53,7 +59,7 @@ class RegisterForm extends Component {
 
             <div class="container">
                 <div class="row main-form">
-                    <form  onSubmit={this.onRegister}>
+                    <form id="registerForm">
 
                         <div class="form-group">
                             <label for="name" classNameName="cols-sm-2 control-label">Имя</label>
@@ -118,8 +124,7 @@ class RegisterForm extends Component {
                         </div>
 
                         <div className="form-group ">
-                            <button type="submit" id="button" >Зарегестрироваться</button>
-                            {/* onClick={this.onRegister} */}
+                            <button type="submit" id="button" onClick={this.onRegister}>Зарегестрироваться</button>
                         </div>
 
                     </form>

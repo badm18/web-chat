@@ -1,8 +1,14 @@
+html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
 a{
     cursor: pointer;
 }
 
 .main-container {
+    min-height: 100vh;
     max-width: 100%;
     margin: auto;
     display: flex;
@@ -15,7 +21,7 @@ a{
 .center{
     width: 60%;
     align-items: center;
-    background: red;
+    background: whitesmoke;
 }
 .right-side{
     width: 20%;
@@ -28,7 +34,7 @@ a{
     background:#F6F8FA;
     border:1px solid black;
 }
-#search{
+#searchBar{
     width: 300px;
     height: 25px;
     margin-top: 15px;
@@ -69,4 +75,13 @@ a{
     width: 25px;
     padding-bottom: 20px;
     margin-right: 5px;
+}
+#userImage{
+    width: 50px;
+    height: 50px;
+}
+.resultField{
+    border: 2px solid black;
+    display: flex;
+    margin: 0px 150px 0px 150px;
 }

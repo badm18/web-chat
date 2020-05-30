@@ -1,17 +1,19 @@
 import * as app from "firebase/app";
 import 'firebase/auth'
 import 'firebase/firebase-firestore'
+import 'firebase/database'
+import 'firebase/storage'
 
 
 
 
 var firebaseConfig = {
 	apiKey: "AIzaSyARUWpqc0nNXa0kIQiLy6gN9AgXOYawQXQ",
-	authDomain: "web-chat-e36cb.firebaseapp.com",
-	databaseURL: "https://web-chat-e36cb.firebaseio.com",
-	projectId: "web-chat-e36cb",
-	storageBucket: "web-chat-e36cb.appspot.com",
-	messagingSenderId: "1017710627055",
+    authDomain: "web-chat-e36cb.firebaseapp.com",
+    databaseURL: "https://web-chat-e36cb.firebaseio.com",
+    projectId: "web-chat-e36cb",
+    storageBucket: "web-chat-e36cb.appspot.com",
+    messagingSenderId: "1017710627055",
 	appId: "1:1017710627055:web:b7a7c9b0eea502032d731a"
 };
 
@@ -36,24 +38,19 @@ class Firebase {
 	async register(name, surname, email, password) {
 
 		await this.auth.createUserWithEmailAndPassword(email, password);
+		console.log(app.auth().currentUser.uid);
+		app.auth().currentUser.updateProfile({
+			displayName: name+' '+surname,
+			photoURL: '/images/noavatar.png',
 
-		return app.database().ref('users/').push({
+		  })
+
+		 return app.database().ref().child('/users/'+app.auth().currentUser.uid).set({
 			name: name,
 			surname: surname,
 			email: email,
 			id: this.auth.currentUser.uid,
 		});
-
-
-
-
-		// app.auth().currentUser.updateProfile({
-		// 	displayName: name,	
-		// })
-
-
-
-
 	}
 
 
@@ -62,15 +59,7 @@ class Firebase {
 	}
 
 
-	addQuote(quote) {
-		if (!this.auth.currentUser) {
-			return alert('Not authorized')
-		}
-
-		return this.db.doc(`users_codedamn_video/${this.auth.currentUser.uid}`).set({
-			quote
-		})
-	}
+	
 
 	isInitialized() {
 		return new Promise(resolve => {
@@ -81,6 +70,8 @@ class Firebase {
 	getCurrentUsername() {
 		return this.auth.currentUser && this.auth.currentUser.email
 	}
+
+	
 
 
 }
