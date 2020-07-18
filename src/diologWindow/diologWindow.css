@@ -46,8 +46,6 @@
 .message{
     display: flex;
 }
-
-
 #messageInput{
     height: 50px;
     width: 500px;
@@ -57,4 +55,28 @@
 #crossMark:hover,#clip:hover{
     fill:gray;
     cursor: pointer;
+}
+#sent-icon:hover{
+    fill:gray;
+}
+#sent-icon,.upload-icon{
+    margin: auto 0 auto 6px;
+}
+#spinner{
+    margin-left: 50%;
+    margin-top: 40%;
+}
+#lastOnline{
+    margin: 0px;
+}
+#nameNonline{ 
+    display: flex;
+    flex-direction: column;
+    margin-left: 7px;
+}
+#dipslayName{
+    margin: 0px 0px 0px 0px;
+}
+.footerIcons{
+    display: flex;
 }

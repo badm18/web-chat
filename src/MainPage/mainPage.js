@@ -4,9 +4,8 @@ import ModalPlus from '../ModalPlus/modalPlus';
 import EditTask from '../EditTask/editTask';
 import * as app from "firebase/app";
 import firebase from '../firebase'
-import { Redirect } from 'react-router';
 import DiologWindow from '../diologWindow/diologWindow';
-
+import ModalPic from '../ProfilePic/profilepic';
 
 
 
@@ -18,14 +17,14 @@ class MainPage extends Component {
             date: new Date(),
             diologs: [],
             task: [],
-            text: 'Hello world',
-            test: '',
-            email: null,
             searchBar: '',
             searchResult: [],
             isDiologOpen: false,
             userInfo: {},
+            users: [],
             online: [],
+            file: [],
+            interlocutor: {},
         }
 
 
@@ -39,32 +38,42 @@ class MainPage extends Component {
     }
 
 
-    componentDidMount() {
+    async componentDidMount() {
         let userId = app.auth().currentUser.uid;
         this.timerID = setInterval(
             () => this.time()
             , 1000);
 
         //Загрузка списка задач для пользователя
-        app.database().ref('tasks/' + userId).once('value').then((snapshot) => {
+        await app.database().ref('tasks/' + userId).once('value').then((snapshot) => {
             snapshot.forEach((element) => {
                 this.state.task.push(element.val());
             });
         });
+        //загрузка информации о пользователях с которыми есть диалог
+        await app.database().ref('diologs/' + userId).once('value').then((snapshot) => {
+            snapshot.forEach((element) => {
 
+                this.getProfilePicture(element.val().id)
+            });
+        })
         //загрузка диологов пользователя
         app.database().ref('diologs/' + userId).on('child_added', (snapshot) => {
-            this.state.diologs.push(snapshot.val())
+            this.state.diologs.push(snapshot.val());
         })
         //Загрузка последнего сообщения которое было отправлено
         app.database().ref('diologs/' + userId).on('child_changed', (snapshot) => {
-           this.state.diologs[this.state.diologs.findIndex(item=>item.id===snapshot.val().id)]=snapshot.val()
+            this.state.diologs[this.state.diologs.findIndex(item => item.id === snapshot.val().id)] = snapshot.val()
+        })
+        //обновление данных о пользователе, если он поменял аватарку
+        app.database().ref('users/').on('child_changed', (snapshot) => {
+            this.state.users[this.state.users.findIndex(item => item.id === snapshot.val().id)] = snapshot.val()
         })
 
 
 
 
-
+      
 
 
         //статус онлайна пользователя
@@ -154,52 +163,58 @@ class MainPage extends Component {
         }
     }
 
-    searchBar() {
-        this.setState({
+    //удаление заметки
+    deleteTask(e) {
+        app.database().ref('tasks/' + app.auth().currentUser.uid + '/' + e.id).remove();
+        this.state.task.splice(this.state.task.findIndex(item => item.id === e.id), 1);
+    }
+
+    async searchBar() {
+        await this.setState({
             isDiologOpen: false,
             searchResult: [],
 
         })
 
         let ref = app.database().ref('users');
-        ref.orderByChild('surname').equalTo(this.state.searchBar).once('value', ((snapshot) => {
-
+        await ref.orderByChild('surname').equalTo(this.state.searchBar).once('value', ((snapshot) => {
             snapshot.forEach((childSnapshot) => {
-
                 this.state.searchResult.push(childSnapshot.val())
-
             });
         }));
 
-        // if (this.state.searchResult == []) {
-        //     alert('Пользователь не найден')
-        // }
+
     }
 
-  async  writeMessage(props) {
-
-    //загуржается информация о пользователя для diologWindow(props)
-    await  app.database().ref('users/' + props.id).once('value').then((snapshot) => {
-       this.setState({userInfo:snapshot.val()})
-      });
-
+    async writeMessage(props) {
+        //загуржается информация о пользователе для diologWindow(props)
+        await app.database().ref('users/' + props.id).once('value').then((snapshot) => {
+            this.setState({ userInfo: snapshot.val() })
+        });
+        await app.database().ref('users/' + app.auth().currentUser.uid).once('value').then((snapshot) => {
+            this.state.users.push(snapshot.val())
+        });
+        //слушатель изменений информации о пользователе(онлайн)
+        app.database().ref('users/' + props.id).on('value',(data)=>{
+            this.setState({ userInfo: data.val() })
+        })
+        
         this.setState({
             searchResult: [],
+            searchBar: '',
             isDiologOpen: true,
         });
-
-      
-
-
     }
 
     //функция которая передается в props и отвечает за закрытие диалога
-    closeWindow = (val) => {
+    closeWindow = (val, user) => {
         this.state.isDiologOpen = val;
-        this.state.userInfo={};
+        //добавление в массив информации о пользователе с которым был начат новый диалог
+        this.state.users.push(user)
+        this.state.userInfo = {};
     }
 
-    //получение статуса оналйна пользователей
+    //получение статуса онлайна пользователей
     onlineStatus(id) {
         app.database().ref('users').child(id).child('connections').on('value', (snapshot) => {
             this.state.diologs[this.state.diologs.findIndex(item => item.id === id)].online = snapshot.val()
@@ -207,6 +222,22 @@ class MainPage extends Component {
 
         })
     }
+    // если в сообщении много текста, то для вывода в диалоге последнего сообщения текст сокращается
+    lastMessage(string) {
+        if (string.length > 10) {
+            return string.substr(0, 70) + '...'
+        }
+        return string
+    }
+
+    async getProfilePicture(id) {
+
+        await app.database().ref('users/').child(id).once('value').then((snapshot) => {
+            this.state.users.push(snapshot.val())
+        })
+    }
+
+
 
     render() {
 
@@ -218,8 +249,7 @@ class MainPage extends Component {
 
                 <div className="left-side">
                     <nav className="icons-nav">
-                        <a href="#" id="calendar-ref"> <svg id="calendar-icon" fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px"><path d="M 5 0 L 5 4 L 7 4 L 7 0 Z M 17 0 L 17 4 L 19 4 L 19 0 Z M 1 3 C 0.449219 3 0 3.449219 0 4 L 0 7 C 0 7.550781 0.449219 8 1 8 L 1 24 L 23 24 L 23 8 C 23.550781 8 24 7.550781 24 7 L 24 4 C 24 3.449219 23.550781 3 23 3 L 20 3 L 20 5 L 16 5 L 16 3 L 8 3 L 8 5 L 4 5 L 4 3 Z M 3 8 L 21 8 L 21 22 L 3 22 Z M 5 10 L 5 12 L 7 12 L 7 10 Z M 9 10 L 9 12 L 11 12 L 11 10 Z M 13 10 L 13 12 L 15 12 L 15 10 Z M 17 10 L 17 12 L 19 12 L 19 10 Z M 5 14 L 5 16 L 7 16 L 7 14 Z M 9 14 L 9 16 L 11 16 L 11 14 Z M 13 14 L 13 16 L 15 16 L 15 14 Z M 17 14 L 17 16 L 19 16 L 19 14 Z M 5 18 L 5 20 L 7 20 L 7 18 Z M 9 18 L 9 20 L 11 20 L 11 18 Z M 13 18 L 13 20 L 15 20 L 15 18 Z M 17 18 L 17 20 L 19 20 L 19 18 Z" /></svg>
-                        </a>
+
                         <a href="#" id="plus-ref"><ModalPlus id='plus-icon' updateData={this.updateData} /></a>
                     </nav>
 
@@ -228,7 +258,7 @@ class MainPage extends Component {
                         {this.state.task.map(i =>
                             //вывод списка задач пользователя
 
-                            <div className='task'>
+                            <div className='task' >
 
                                 <header id='taskHeader'>
                                     <p id='taskLabel'>{i.label}</p>
@@ -244,7 +274,8 @@ class MainPage extends Component {
                                     <p id='dateOfCreation'>{i.dateOfCreation}</p>
                                     <div className='taskIcons'>
                                         <a href="#" id='editLink' ><EditTask taskState={i} /></a>
-                                        <a href="#" id='checkMarkLink'><svg id='checkMark' fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50px" height="50px"><path d="M 25 2 C 12.317 2 2 12.317 2 25 C 2 37.683 12.317 48 25 48 C 37.683 48 48 37.683 48 25 C 48 20.44 46.660281 16.189328 44.363281 12.611328 L 42.994141 14.228516 C 44.889141 17.382516 46 21.06 46 25 C 46 36.579 36.579 46 25 46 C 13.421 46 4 36.579 4 25 C 4 13.421 13.421 4 25 4 C 30.443 4 35.393906 6.0997656 39.128906 9.5097656 L 40.4375 7.9648438 C 36.3525 4.2598437 30.935 2 25 2 z M 43.236328 7.7539062 L 23.914062 30.554688 L 15.78125 22.96875 L 14.417969 24.431641 L 24.083984 33.447266 L 44.763672 9.046875 L 43.236328 7.7539062 z" /></svg></a>
+                                        <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" height="32" width="32" onClick={() => { this.deleteTask(i) }} id="crossMark" ><path d="M4,29a1,1,0,0,1-.71-.29,1,1,0,0,1,0-1.42l24-24a1,1,0,1,1,1.42,1.42l-24,24A1,1,0,0,1,4,29Z" /><path d="M28,29a1,1,0,0,1-.71-.29l-24-24A1,1,0,0,1,4.71,3.29l24,24a1,1,0,0,1,0,1.42A1,1,0,0,1,28,29Z" /></svg>
+
                                     </div>
                                 </footer>
 
@@ -260,8 +291,9 @@ class MainPage extends Component {
 
                 <div className="center">
                     <header className="search-string">
-                        <input id="searchBar" placeholder="Что нужно найти?" onChange={this.handleChange}></input>
-                        <button onClick={this.searchBar} >Нажми</button>
+                        <input id="searchBar" placeholder="Что нужно найти?" value={this.state.searchBar} onChange={this.handleChange}></input>
+                        <svg id="search-icon" fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50px" height="50px" onClick={this.searchBar}><path d="M 7 4 C 5.3545455 4 4 5.3545455 4 7 L 4 43 C 4 44.645455 5.3545455 46 7 46 L 43 46 C 44.645455 46 46 44.645455 46 43 L 46 7 C 46 5.3545455 44.645455 4 43 4 L 7 4 z M 7 6 L 43 6 C 43.554545 6 44 6.4454545 44 7 L 44 43 C 44 43.554545 43.554545 44 43 44 L 7 44 C 6.4454545 44 6 43.554545 6 43 L 6 7 C 6 6.4454545 6.4454545 6 7 6 z M 22.5 13 C 17.26514 13 13 17.26514 13 22.5 C 13 27.73486 17.26514 32 22.5 32 C 24.758219 32 26.832076 31.201761 28.464844 29.878906 L 36.292969 37.707031 L 37.707031 36.292969 L 29.878906 28.464844 C 31.201761 26.832076 32 24.758219 32 22.5 C 32 17.26514 27.73486 13 22.5 13 z M 22.5 15 C 26.65398 15 30 18.34602 30 22.5 C 30 26.65398 26.65398 30 22.5 30 C 18.34602 30 15 26.65398 15 22.5 C 15 18.34602 18.34602 15 22.5 15 z" /></svg>
+
                     </header>
 
                     <div className="centerContent">
@@ -273,17 +305,18 @@ class MainPage extends Component {
 
                             this.state.searchResult.length === 0 && this.state.isDiologOpen === false &&
 
-                            <div className="resultField" >
+                            <div className="resultField" onClick={() => this.writeMessage(i)}>
 
                                 {this.onlineStatus(i.id)}
 
-                                <img src="/images/noavatar.png" id="userImage" />
-                                <p className="userName">{i.displayName} - </p>
-                                <p>- {i.lastMessage}</p>
+                                <img src={this.state.users[this.state.users.findIndex(item => item.id === i.id)].ProfilePicture} alt="image" id="userImage" />
+                                <div id="wasd">
+                                    <p className="userName" id="displayName">{i.displayName}</p>
 
-                                <button onClick={() => this.writeMessage(i)}>Написать сообщение</button>
-                                {i.online ? <p>Online</p> : <p>Offline</p>}
+                                    <p id="lastMessage">  {this.lastMessage(i.lastMessage)}</p>
+                                </div>
 
+                                <div id="onlineStatus"><p>{i.online ? <p>Online</p> : <p>Offline</p>}</p></div>
 
 
                             </div>
@@ -292,19 +325,20 @@ class MainPage extends Component {
 
 
 
-
+                     
 
                         {this.state.searchResult.map(i =>
                             //вывод найденных пользователей
 
                             this.state.isDiologOpen === false &&
 
-                            <div className="resultField" >
-                                <img src="/images/noavatar.png" id="userImage" />
-                                <p className="userName">{i.name} {i.surname}</p>
+                            <div className="resultField" onClick={() => this.writeMessage(i)} >
+                                <img src={i.ProfilePicture} id="userImage" />
+                                <p className="userName" id="displayName">{i.name} {i.surname}</p>
 
-                                <button onClick={() => this.writeMessage(i)}>Написать сообщение</button>
-                                {i.connections ? <p>Online</p> : <p>Offline</p>}
+
+                                <div id="onlineStatus"><p>{i.online ? <p>Online</p> : <p>Offline</p>}</p></div>
+
 
                             </div>
 
@@ -314,7 +348,7 @@ class MainPage extends Component {
 
                         )}
 
-                        {this.state.isDiologOpen === true && <DiologWindow user={this.state.userInfo} closeWindow={this.closeWindow} />}
+                        {this.state.isDiologOpen === true && <DiologWindow user={this.state.userInfo} closeWindow={this.closeWindow} interlocutor={this.state.users[this.state.users.findIndex(item => item.id === app.auth().currentUser.uid)]} />}
 
 
 
@@ -322,15 +356,21 @@ class MainPage extends Component {
                     </div>
 
                 </div>
-
-                <aside className="right-side">
-                    <p id="timer">{this.state.date.toLocaleTimeString()}</p>
-                    <p>{this.addZero(this.state.date.getDate())}.{this.addZero(this.state.date.getMonth() + 1)}.{this.state.date.getFullYear()}</p>
-                    <p>{firebase.getCurrentUsername()}</p>
-                    <div><button onClick={this.logout}>Выход</button></div>
-                </aside>
-
+                <div id="rightArea">
+                    <div id="rightAside">
+                        <aside className="right-side">
+                            <p id="timer">{this.state.date.toLocaleTimeString()}</p>
+                            {/* <p>{this.addZero(this.state.date.getDate())}.{this.addZero(this.state.date.getMonth() + 1)}.{this.state.date.getFullYear()}</p> */}
+                            <p>{firebase.getCurrentUsername()}</p>
+                            <div><button onClick={this.logout}>Выход</button></div>
+                        </aside>
+                    </div>
+                    <div id="profileLink">
+                        <a><ModalPic /></a>
+                    </div>
+                </div>
             </div>
+
 
 
 

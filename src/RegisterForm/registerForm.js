@@ -21,26 +21,26 @@ class RegisterForm extends Component {
 
 
 
-    handleChange=(e)=>{
+    handleChange = (e) => {
         this.setState({
             [e.target.id]: e.target.value,
         })
     }
 
-    handleSubmit=(e)=>{
+    handleSubmit = (e) => {
         e.preventDefault();
         firebase.register();
     }
-   
 
-    onRegister(e) {
+
+    async onRegister(e) {
         e.preventDefault();
-        
-       if(this.state.password!=this.state.passwordConfirm){
-           return alert('Пароль не совпадает')
-       }
-       
-        firebase.register(this.state.name, this.state.surname, this.state.email, this.state.password);
+
+        if (this.state.password != this.state.passwordConfirm) {
+            return alert('Пароль не совпадает')
+        }
+
+        await firebase.register(this.state.name, this.state.surname, this.state.email, this.state.password);
         this.setState({
             email: '',
             name: '',
@@ -49,7 +49,8 @@ class RegisterForm extends Component {
             surname: '',
         });
 
-    
+        this.props.history.push('/id');
+
     }
 
 
@@ -77,7 +78,7 @@ class RegisterForm extends Component {
                             <div className="cols-sm-10">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="fa fa-users fa" aria-hidden="true"></i></span>
-                                    <input type="text" className="form-control" name="username" id="surname" placeholder="Введите вашу фамилию" required pattern="[A-Za-zА-Яа-я]+"  onChange={this.handleChange} />
+                                    <input type="text" className="form-control" name="username" id="surname" placeholder="Введите вашу фамилию" required pattern="[A-Za-zА-Яа-я]+" onChange={this.handleChange} />
                                 </div>
                             </div>
                         </div>
@@ -87,7 +88,7 @@ class RegisterForm extends Component {
                             <div className="cols-sm-10">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="fa fa-envelope fa" aria-hidden="true"></i></span>
-                                    <input type="email" className="form-control" name="email" id="email" placeholder="Введите ваш Email" required  onChange={this.handleChange} />
+                                    <input type="email" className="form-control" name="email" id="email" placeholder="Введите ваш Email" required onChange={this.handleChange} />
                                 </div>
                             </div>
                         </div>
@@ -98,7 +99,7 @@ class RegisterForm extends Component {
                             <div className="cols-sm-10">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                    <input type="password" className="form-control" name="password" id="password" placeholder="Введите ваш пароль" required  onChange={this.handleChange} />
+                                    <input type="password" className="form-control" name="password" id="password" placeholder="Введите ваш пароль" required onChange={this.handleChange} />
                                 </div>
                             </div>
                         </div>
@@ -108,7 +109,7 @@ class RegisterForm extends Component {
                             <div className="cols-sm-10">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                    <input type="password" className="form-control" name="confirm" id="passwordConfirm" placeholder="Введите ваш пароль" required  onChange={this.handleChange} />
+                                    <input type="password" className="form-control" name="confirm" id="passwordConfirm" placeholder="Введите ваш пароль" required onChange={this.handleChange} />
                                 </div>
                             </div>
                         </div>

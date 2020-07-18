@@ -1,3 +1,9 @@
+body{
+    min-width: 1750px;
+}
+.container{
+ overflow: auto;
+}
 form{
     margin-left: auto;
     margin-right: auto;
@@ -34,7 +40,8 @@ form{
    .main-form{
     margin-top: 30px;
     margin: 0 auto;
-    max-width: 400px;
+    min-height: 609px;
+    min-width: 400px;
     padding: 10px 40px;
    background:#009edf;
    color: #FFF;

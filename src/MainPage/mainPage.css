@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
-    overflow: hidden;
+    min-width: 1750px;
+    overflow: auto;
   }
 
 a{
@@ -24,8 +25,7 @@ a{
     background: whitesmoke;
 }
 .right-side{
-    width: 20%;
-    display:flex;
+    display: flex;
     justify-content: space-around;
 }
 .search-string{
@@ -50,8 +50,13 @@ a{
 #calendar-ref{
     margin-right:10px;
 }
-#calendar-icon:hover,#plus-icon:hover,#checkMark:hover,#edit:hover{
+#calendar-icon:hover,#plus-icon:hover,#checkMark:hover,#edit:hover,#search-icon:hover{
     fill:gray;
+}
+#search-icon{
+    width: 35px;
+    margin-left: 3px;
+    margin-top: 2px;
 }
 .task{
     margin: 10px;
@@ -67,7 +72,7 @@ a{
     display: flex;
     justify-content: space-between;
 }
-#checkMark{
+#crossMark{
     width: 25px;
     padding-bottom: 20px;
 }
@@ -84,4 +89,33 @@ a{
     border: 2px solid black;
     display: flex;
     margin: 0px 150px 0px 150px;
+}
+.resultField:hover{
+    background: rgb(238, 226, 226);
+}
+#wasd{
+    display:flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+#lastMessage,#displayName{
+    margin: 0;
+}
+#onlineStatus{
+    margin: 5px 5px 0 auto
+}
+.userName{
+    font-weight: 600;
+}
+#rightArea{
+    width: 20%;
+}
+#profileLink{
+    margin-left:9px;
+}
+#changePicture{
+    text-decoration: underline;
+}
+#changePicture:hover{
+    color: blue;
 }

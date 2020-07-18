@@ -41,13 +41,13 @@ class App extends Component {
 
   render() {
     return (
-        <Router>
-        <Route exact path="/" component={Login} />
-        <Route path="/registration" component={RegistrForm} />
-        <Route path="/id"> 
-        {this.state.user ? <MainPage />: <Redirect push to={'/'} />}
-        </Route>
-        </Router>
+      <Router>
+      <Route exact path="/" component={Login} />
+      <Route path="/registration" component={RegistrForm} />
+      <Route path="/id"> 
+      {this.state.user ? <MainPage />: <Redirect push to={'/'} />}
+      </Route>
+      </Router>
     );
   }
 }

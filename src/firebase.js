@@ -37,12 +37,14 @@ class Firebase {
 
 	async register(name, surname, email, password) {
 
-		await this.auth.createUserWithEmailAndPassword(email, password);
-		console.log(app.auth().currentUser.uid);
+		await this.auth.createUserWithEmailAndPassword(email, password).then(function(){
+		}).catch(function(error){
+			alert(error.message);
+        })
+		
 		app.auth().currentUser.updateProfile({
 			displayName: name+' '+surname,
-			photoURL: '/images/noavatar.png',
-
+			photoURL: 'https://firebasestorage.googleapis.com/v0/b/web-chat-e36cb.appspot.com/o/avatar%2Fnoavatar.png?alt=media&token=378895c5-1fb7-443f-80ed-65e6c30d4486',
 		  })
 
 		 return app.database().ref().child('/users/'+app.auth().currentUser.uid).set({
@@ -50,6 +52,7 @@ class Firebase {
 			surname: surname,
 			email: email,
 			id: this.auth.currentUser.uid,
+			ProfilePicture:'https://firebasestorage.googleapis.com/v0/b/web-chat-e36cb.appspot.com/o/avatar%2Fnoavatar.png?alt=media&token=378895c5-1fb7-443f-80ed-65e6c30d4486',
 		});
 	}
 

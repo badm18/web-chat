@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import firebase from "firebase/app";
-import { Button, Modal, InputGroup, FormControl } from 'react-bootstrap';
+
 
 class Uploader extends Component {
 
@@ -78,6 +78,7 @@ class Uploader extends Component {
                         break;
                 }
             }, function () {
+                
                 // Upload completed successfully, now we can get the download URL
                 uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
                     console.log('File available at', downloadURL);
@@ -97,7 +98,7 @@ class Uploader extends Component {
     render() {
         return (
             <>
-                <svg version="1.1" id="clip" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 792.025 792.025" onClick={this.handleShow} >
+                <svg className="upload-icon" version="1.1" id="clip" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 792.025 792.025" onClick={this.handleShow} >
                     <path d="M334.189,259.875c0,6.832-5.569,12.375-12.375,12.375c-6.832,0-12.375-5.543-12.375-12.375
 c0-23.848,9.745-45.53,25.42-61.205l0.825-0.773c15.624-15.211,36.944-24.647,60.328-24.647c23.77,0,45.426,9.771,61.126,25.472
 l0.025-0.025c15.676,15.675,25.447,37.383,25.447,61.179c0,6.832-5.543,12.375-12.375,12.375s-12.375-5.543-12.375-12.375
@@ -130,7 +131,7 @@ c0-6.832,5.543-12.375,12.375-12.375s12.375,5.543,12.375,12.375V680.625z"/>
 
 
                 {this.state.show === true &&
-                    <div>
+                    <div className="upload-icon">
                         <progress value={this.props.progress} max="100" />
                         <div>
                             <input type="file" onChange={this.chooseFile} />

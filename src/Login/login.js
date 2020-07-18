@@ -71,12 +71,7 @@ class Login extends Component {
             <input type="password" className="form-control" id="pwd" placeholder="Введите ваш пароль" name="pswd" required onChange={(event) => this.setState({ password: event.target.value })} />
           </div>
           <div className="form-group form-check">
-            <label className="form-check-label">
-              <input className="form-check-input" type="checkbox" name="remember" /> Запомнить меня
-            </label>
-
             <NavLink to={'/registration'} id='registr'>Регистрация</NavLink>
-
           </div>
           <button type="submit" className="btn btn-primary" onClick={this.login} >Продолжить</button>
         </form>
